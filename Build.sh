@@ -287,6 +287,7 @@ function build_gcc {
     rm -rf $GCCBUILD
     mkdir -p $GCCBUILD
     cd $GCCBUILD
+    CFLAGS="-Wno-error=gnu-designator" \
     ../$GCCNAME/configure $HOST --target=ba-elf --prefix=$PREFIX --enable-languages=c,c++,lto --with-gnu-as \
         --with-gnu-ld --with-newlib --enable-target-optspace --disable-libssp --disable-__cxa_atexit \
         --with-gxx-include-dir=$PREFIX/ba-elf/include
@@ -318,6 +319,7 @@ function build_gdb {
     apply_patches "../$GDBNAME-patches"
 
     status "Configuring GDB $GDBVERSION Release $RELEASENO"
+    CFLAGS="-Wno-error=gnu-designator -Wno-error=uninitialized -Wno-error=shift-negative-value" \
     ./configure $HOST --target=ba-elf --prefix=$PREFIX
     if [ "$?" -ne "0" ]; then  echo "Configure failed!"; exit 1; fi
 
@@ -385,6 +387,6 @@ build_clean
 build_binutils
 build_gcc
 build_gdb
-build_jtag
+#build_jtag
 
 echo "Toolchain built successfully and installed to $PREFIX"
