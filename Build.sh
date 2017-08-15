@@ -318,6 +318,7 @@ function build_gdb {
     apply_patches "../$GDBNAME-patches"
 
     status "Configuring GDB $GDBVERSION Release $RELEASENO"
+    CFLAGS="-Wno-error=unused-value -Wno-error=shift-negative-value" \
     ./configure $HOST --target=ba-elf --prefix=$PREFIX
     if [ "$?" -ne "0" ]; then  echo "Configure failed!"; exit 1; fi
 
@@ -385,6 +386,6 @@ build_clean
 build_binutils
 build_gcc
 build_gdb
-build_jtag
+#build_jtag
 
 echo "Toolchain built successfully and installed to $PREFIX"
